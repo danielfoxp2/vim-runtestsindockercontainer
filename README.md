@@ -18,6 +18,7 @@ Feel free to change and add flexibility as you want it.
 ## MAPPINGS AND USAGE
 
 `<cr>` => a.k.a `Enter` => to run tests on a specific file
+
 `<leader>a` => to run all unit tests at once
 
 ## CONCLUSION

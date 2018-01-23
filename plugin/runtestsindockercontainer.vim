@@ -36,15 +36,17 @@ function! RunTests(filename)
     let g:docker_command = ':!docker exec -it elixir bash -c '
     
     SaveFileBeforeContinue()
+    let mixPathToRunTests = GetRootPathOfTheProject()
 
     if match(a:filename, '\(_context.exs\|.feature\)$') != -1
-        let mixPathToRunTests = matchstr(expand("%:p"), '\(.*\)\/apps\/.\{-}\/')
         exec g:docker_command . "\"cd " . mixPathToRunTests . " && mix white_bread.run " . a:filename . "\""
     elseif match(a:filename, '_test.exs')
-        let mixPathToRunTests = matchstr(expand("%:p"), '\(.*\)\/apps\/.\{-}\/')
         exec g:docker_command . "\"cd " . mixPathToRunTests . " && elixir " . a:filename . "\""
     else
-        let mixPathToRunTests = matchstr(expand("%:p"), '\(.*\)\/work\/.\{-}\/')
+        " Acho que era preciso ser diferente das linhas acima, que eram executadas somente no projeto umbrella
+        " porque era pra rodar em todos os projetos. Por isso que usava direto o work.
+        " Como não estou usando umbrella por enquanto, então o código vai servir pra todos os runners
+        " let mixPathToRunTests = matchstr(expand("%:p"), '\(.*\)\/work\/.\{-}\/')
         exec g:docker_command . "\"cd " . mixPathToRunTests . " && mix espec " . a:filename . "\""
     endif
 endfunction
@@ -54,4 +56,15 @@ function! SaveFileBeforeContinue()
         :w
     endif
 endfunction
+
+function! GetRootPathOfTheProject()                                                                                                               
+    let umbrella_path = matchstr(expand("%:p"), '\(.*\)\/apps\/.\{-}\/')                                                                          
+    let root_work_path = matchstr(expand("%:p"), '\(.*\)\/work\/.\{-}\/')                                                                         
+                                                                                                                                                  
+    if umbrella_path != ''                                                                                                                        
+        return umbrella_path                                                                                                                      
+    else                                                                                                                                          
+        return root_work_path                                                                                                                     
+    endif                                                                                                                                         
+endfunction                 
 

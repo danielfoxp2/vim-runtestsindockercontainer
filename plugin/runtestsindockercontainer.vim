@@ -41,7 +41,7 @@ function! RunTests(filename)
     if match(a:filename, '\(_context.exs\|.feature\)$') != -1
         exec g:docker_command . "\"cd " . mixPathToRunTests . " && mix white_bread.run " . a:filename . "\""
     elseif match(a:filename, '_test.exs') != -1
-        exec g:docker_command . "\"cd " . mixPathToRunTests . " && elixir " . a:filename . "\""
+        exec g:docker_command . "\"cd " . mixPathToRunTests . " && mix test " . a:filename . "\""
     else
         " Acho que era preciso ser diferente das linhas acima, que eram executadas somente no projeto umbrella
         " porque era pra rodar em todos os projetos. Por isso que usava direto o work.

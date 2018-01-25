@@ -35,7 +35,7 @@ endfunction
 function! RunTests(filename)
     let g:docker_command = ':!docker exec -it elixir bash -c '
     
-    SaveFileBeforeContinue()
+    call SaveFileBeforeContinue()
     let mixPathToRunTests = GetRootPathOfTheProject()
 
     if match(a:filename, '\(_context.exs\|.feature\)$') != -1
